@@ -104,8 +104,8 @@ with the same name as your theme, and a ``.theme`` extension, eg.
 .. code:: ini
 
    [Theme]
-   engine = mako
-   parent = base
+   engine = jinja
+   parent = base-jinja
    author = The Nikola Contributors
    author_url = https://getnikola.com/
    based_on = Bootstrap 3 <https://getbootstrap.com/>
@@ -119,6 +119,10 @@ with the same name as your theme, and a ``.theme`` extension, eg.
 
    [Nikola]
    bootswatch = True
+
+   [jinja]
+   # Good for investigation, but not recommended to leave active in production:
+   extensions = jinja2.ext.debug
 
 The following keys are currently supported:
 
@@ -163,6 +167,13 @@ The following keys are currently supported:
     defaults to False)
   * ``ignored_assets`` — comma-separated list of assets to ignore (relative to
     the ``assets/`` directory, eg. ``css/theme.css``)
+
+* ``jinja`` - This section is ignored unless your theme's engine is ``jinja``.
+
+  * ``extensions`` - comma-separated list of
+    `jinja2-extensions <https://jinja.palletsprojects.com/en/3.1.x/extensions/>`_
+    that you want to be available when rendering your templates.
+
 
 Templates
 ---------

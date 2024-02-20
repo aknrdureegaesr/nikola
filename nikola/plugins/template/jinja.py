@@ -29,6 +29,7 @@
 import io
 import json
 import os
+from typing import List, Mapping, Optional
 
 from nikola.plugin_categories import TemplateSystem
 from nikola.utils import makedirs, req_missing, slugify, sort_posts, _smartjoin_filter
@@ -45,14 +46,33 @@ class JinjaTemplates(TemplateSystem):
     """Support for Jinja2 templates."""
 
     name = "jinja"
-    lookup = None
+    if jinja2 is None:
+        lookup = None
+    else:
+        lookup: Optional[jinja2.Environment] = None
     dependency_cache = {}
     per_file_cache = {}
+    _user_configured_jina_extensions: List[str] = []
 
     def __init__(self):
         """Initialize Jinja2 environment with extended set of filters."""
         if jinja2 is None:
             return
+
+    def user_configuration(self, user_config: Mapping[str, str]) -> None:
+        supported_config_keys = set(["extensions",])
+        for key in user_config.keys():
+            if key not in supported_config_keys:
+                raise RuntimeError(f'Configuration key "{key}" found in theme init file is not supported for jinja template engine.')
+
+        if "extensions" in user_config:
+            self._user_configured_jina_extensions = [ext for ext in (e.strip() for e in user_config["extensions"].split(",")) if ext]
+        else:
+            self._user_configured_jina_extensions = []
+
+        if self.lookup:
+            for wanted_extension in self._user_configured_jina_extensions:
+                self.lookup.add_extension(wanted_extension)
 
     def set_directories(self, directories, cache_folder):
         """Create a new template lookup with set directories."""
@@ -62,6 +82,8 @@ class JinjaTemplates(TemplateSystem):
         makedirs(cache_folder)
         cache = jinja2.FileSystemBytecodeCache(cache_folder)
         self.lookup = jinja2.Environment(bytecode_cache=cache)
+        for wanted_extension in self._user_configured_jina_extensions:
+            self.lookup.add_extension(wanted_extension)
         self.lookup.trim_blocks = True
         self.lookup.lstrip_blocks = True
         self.lookup.filters['tojson'] = json.dumps

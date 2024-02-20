@@ -334,7 +334,7 @@ class CommandTheme(Command):
             LOGGER.info("Created directory {0}".format(base))
 
         # Check if engine and parent match
-        parent_engine = utils.get_template_engine(utils.get_theme_chain(parent, self.site.themes_dirs))
+        parent_engine = utils.get_template_engine(utils.get_theme_chain(parent, self.site.themes_dirs))[0]
 
         if parent_engine != engine:
             LOGGER.error("Cannot use engine {0} because parent theme '{1}' uses {2}".format(engine, parent, parent_engine))

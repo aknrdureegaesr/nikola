@@ -22,6 +22,7 @@ Features
 * Support passing ``--poll`` to ``nikola auto`` to better deal with symlink farms.
 * Trace template usage when an environment variable ``NIKOLA_TEMPLATES_TRACE``
   is set to any non-empty value.
+* Allow configuration of Jinja2 extensions through the theme configuration.
 
 Bugfixes
 --------
