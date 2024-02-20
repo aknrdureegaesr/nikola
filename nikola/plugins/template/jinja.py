@@ -60,6 +60,7 @@ class JinjaTemplates(TemplateSystem):
             return
 
     def user_configuration(self, user_config: Mapping[str, str]) -> None:
+        """Accept user configuration from the theme configuration file."""
         supported_config_keys = set(["extensions",])
         for key in user_config.keys():
             if key not in supported_config_keys:
