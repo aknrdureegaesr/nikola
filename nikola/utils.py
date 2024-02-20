@@ -41,7 +41,7 @@ import subprocess
 import sys
 import threading
 from collections import defaultdict, OrderedDict
-from collections.abc import Callable, Iterable
+from collections.abc import Callable
 from html import unescape as html_unescape
 from importlib import reload as _reload
 from unicodedata import normalize as unicodenormalize
@@ -60,7 +60,7 @@ from blinker import signal
 from doit import tools
 from doit.cmdparse import CmdParse
 from nikola.packages.pygments_better_html import BetterHtmlFormatter
-from typing import Any, Dict, List, Mapping, Match, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Mapping, Match, Optional, Tuple, Union
 from unidecode import unidecode
 
 # Renames
